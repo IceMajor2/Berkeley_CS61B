@@ -62,22 +62,4 @@ public class GuesserHelperFunctions {
         }
         return patternMap;
     }
-
-    public static List<String> excludeUnmatchingWords(List<String> words, String pattern, List<Character> guesses) {
-        List<String> excluded = new ArrayList<>();
-        var matchingWords = getMatchingWords(words, pattern);
-        var patternMap = stringToMap(pattern);
-        one:
-        for (String word : matchingWords) {
-            var wordMap = stringToMap(word);
-            for (char guess : guesses) {
-                if (!patternMap.containsKey(guess) && wordMap.containsKey(guess)) {
-                    continue one;
-                }
-            }
-            excluded.add(word);
-        }
-        return excluded;
-    }
-
 }

@@ -81,22 +81,23 @@ public class PAGALetterFreqGuesserTest {
     @Order(5)
     @DisplayName("Checks for exclusion of words with already-guessed characters not included in pattern")
     public void exclusionTest() {
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
+        PAGALetterFreqGuesser pagalfg = new PAGALetterFreqGuesser("data/example.txt");
+        assertThat(pagalfg.excludeUnmatchingWords
                 (List.of("fool", "cool", "mood"), "-oo-", List.of('o', 'l'))).containsExactly("mood");
 
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
-                (List.of("ally", "ibex", "else"), "-l--", List.of('l', 'e'))).containsExactly("ally");
+        assertThat(pagalfg.excludeUnmatchingWords
+                (List.of("ally", "ibex", "else"), "-l--", List.of('l', 'e'))).containsExactly();
 
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
+        assertThat(pagalfg.excludeUnmatchingWords
                 (List.of("flew", "deal", "cool"), "---l", List.of('l', 'd'))).containsExactly("cool");
 
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
+        assertThat(pagalfg.excludeUnmatchingWords
                 (List.of("fool", "cool", "mood"), "-oo-", List.of('o'))).containsExactly("mood", "fool", "cool");
 
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
+        assertThat(pagalfg.excludeUnmatchingWords
                 (List.of("flew", "deal", "cool"), "---l", List.of('l'))).containsExactly("deal", "cool");
 
-        assertThat(GuesserHelperFunctions.excludeUnmatchingWords
+        assertThat(pagalfg.excludeUnmatchingWords
                 (List.of("see", "bee", "fee"), "--e", List.of('e'))).containsExactly();
     }
 }
