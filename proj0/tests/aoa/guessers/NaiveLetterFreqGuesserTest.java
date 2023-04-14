@@ -65,6 +65,22 @@ public class NaiveLetterFreqGuesserTest {
     @Order(4)
     @DisplayName("NaiveLetterFreqGuesser: guess based on character frequency")
     public void testGetGuess2() {
+        NaiveLetterFreqGuesser nlfg = new NaiveLetterFreqGuesser("tests/data/words.txt");
 
+        List<Character> guesses = List.of();
+        char guess = nlfg.getGuess(guesses);
+        assertThat(guess).isEqualTo('k');
+
+        guesses = List.of('a', 'm', 'y', 'w');
+        guess = nlfg.getGuess(guesses);
+        assertThat(guess).isEqualTo('k');
+
+        guesses = List.of('k', 'm', 'e', 'w');
+        guess = nlfg.getGuess(guesses);
+        assertThat(guess).isEqualTo('s');
+
+        guesses = List.of('k', 's', 'y', 'w');
+        guess = nlfg.getGuess(guesses);
+        assertThat(guess).isEqualTo('e');
     }
 }
