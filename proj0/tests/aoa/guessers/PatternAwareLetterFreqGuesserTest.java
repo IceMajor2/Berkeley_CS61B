@@ -101,6 +101,13 @@ public class PatternAwareLetterFreqGuesserTest {
         guess = palfg.getGuess("-o--a-", List.of('o', 'a', 's', 'l'));
         assertThat(guess).isEqualTo('c');
     }
+
+    @Test
+    @Order(6)
+    @DisplayName("Correct list of matching words based on pattern")
+    public void testGetMatchingWords() {
+        
+    }
 }
 
 
