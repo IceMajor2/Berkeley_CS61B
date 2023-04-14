@@ -1,5 +1,6 @@
 package aoa.guessers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,6 +26,30 @@ public class GuesserHelperFunctions {
                 .filter(ch -> !guesses.contains(ch.getKey()))
                 .max((e1, e2) -> Integer.valueOf(e1.getValue()).compareTo(e2.getValue())).get().getKey();
         return max;
+    }
+
+    public static List<String> getMatchingWords(List<String> words, String pattern) {
+        List<Integer> takenIndices = new ArrayList<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            char ch = pattern.charAt(i);
+            if (ch != '-') {
+                takenIndices.add(i);
+            }
+        }
+        List<String> matchingWords = new ArrayList<>();
+        one:
+        for (String word : words) {
+            if (pattern.length() != word.length()) {
+                continue;
+            }
+            for (int index : takenIndices) {
+                if (pattern.charAt(index) != word.charAt(index)) {
+                    continue one;
+                }
+            }
+            matchingWords.add(word);
+        }
+        return matchingWords;
     }
 
 }

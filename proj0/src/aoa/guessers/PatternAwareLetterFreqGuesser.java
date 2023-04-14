@@ -36,27 +36,7 @@ public class PatternAwareLetterFreqGuesser implements Guesser {
     }
 
     public List<String> getMatchingWords(String pattern) {
-        List<Integer> takenIndices = new ArrayList<>();
-        for (int i = 0; i < pattern.length(); i++) {
-            char ch = pattern.charAt(i);
-            if (ch != '-') {
-                takenIndices.add(i);
-            }
-        }
-        List<String> matchingWords = new ArrayList<>();
-        one:
-        for (String word : words) {
-            if (pattern.length() != word.length()) {
-                continue;
-            }
-            for (int index : takenIndices) {
-                if (pattern.charAt(index) != word.charAt(index)) {
-                    continue one;
-                }
-            }
-            matchingWords.add(word);
-        }
-        return matchingWords;
+        return GuesserHelperFunctions.getMatchingWords(words, pattern);
     }
 
     public static void main(String[] args) {
