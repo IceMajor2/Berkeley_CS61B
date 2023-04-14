@@ -18,27 +18,16 @@ public class NaiveLetterFreqGuesser implements Guesser {
     public char getGuess(String pattern, List<Character> guesses) {
         return getGuess(guesses);
     }
-
-    /**
-     * Returns a map from a given letter to its frequency across all words.
-     * This task is similar to something you did in hw0b!
-     */
     public Map<Character, Integer> getFrequencyMap() {
-        Map<Character, Integer> chFreq = new TreeMap<>();
-        for(String word : words) {
-            for(char ch : word.toCharArray()) {
-                chFreq.put(ch, chFreq.getOrDefault(ch, 0) + 1);
-            }
-        }
-        return chFreq;
+        return GuesserHelperFunctions.getFrequencyMap(words);
     }
-
+    
     /**
      * Returns the most common letter in WORDS that has not yet been guessed
      * (and therefore isn't present in GUESSES).
      */
     public char getGuess(List<Character> guesses) {
-        var freqMap = getFrequencyMap();
+        var freqMap = GuesserHelperFunctions.getFrequencyMap(words);
         char max = freqMap.entrySet().stream().filter(ch -> !guesses.contains(ch.getKey()))
                 .max((e1, e2) -> Integer.valueOf(e1.getValue()).compareTo(e2.getValue())).get().getKey();
         return max;
