@@ -104,12 +104,29 @@ public class PatternAwareLetterFreqGuesserTest {
 
     @Test
     @Order(6)
-    @DisplayName("Correct list of matching words based on pattern")
+    @DisplayName("PatternAwareLetterFreqGuesser gets correct list of matching words based on pattern")
     public void testGetMatchingWords() {
         PatternAwareLetterFreqGuesser palfg = new PatternAwareLetterFreqGuesser("data/example.txt");
 
         String pattern = "-o--";
         assertThat(palfg.getMatchingWords(pattern)).containsExactly("cool", "good", "hope");
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("PatternAwareLetterFreqGuesser takes a pattern of a word into account while guessing")
+    public void testGetGuess() {
+        PatternAwareLetterFreqGuesser palfg = new PatternAwareLetterFreqGuesser("tests/data/words.txt");
+
+        String pattern = "--s-";
+        List<Character> guesses = List.of('s', 'x');
+        char guess = palfg.getGuess(pattern, guesses);
+        assertThat(guess).isEqualTo('z');
+
+        pattern = "--sz";
+        guesses = List.of('s', 'z', 'x');
+        guess = palfg.getGuess(pattern, guesses);
+        assertThat(guess).isEqualTo('a');
     }
 }
 
