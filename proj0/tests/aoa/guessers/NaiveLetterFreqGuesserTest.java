@@ -60,4 +60,11 @@ public class NaiveLetterFreqGuesserTest {
         guess = nlfg.getGuess(List.of('l', 'o', 'x', 'a', 'e'));
         assertThat(guess).isEqualTo('b');
     }
+
+    @Test
+    @Order(4)
+    @DisplayName("NaiveLetterFreqGuesser: guess based on character frequency")
+    public void testGetGuess2() {
+
+    }
 }
