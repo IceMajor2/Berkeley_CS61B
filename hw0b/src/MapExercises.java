@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class MapExercises {
 
     public static void main(String[] args) {
-        letterToNum();
+
     }
     /**
      * Returns a map from every lower case letter to the number corresponding to that letter, where 'a' is
@@ -18,6 +18,7 @@ public class MapExercises {
         int i = 1;
         for(char ch = 'a'; ch <= 'z'; ch++) {
             map.put(ch, i);
+            i++;
         }
         return map;
     }
