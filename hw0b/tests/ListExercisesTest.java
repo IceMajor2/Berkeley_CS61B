@@ -61,4 +61,19 @@ public class ListExercisesTest {
         assertThat(ListExercises.countOccurrencesOfC(lst, 'a')).isEqualTo(0);
     }
 
+    @Test
+    @Order(4)
+    @DisplayName("My test of sum method")
+    public void sumMethodTestOwn() {
+        List<Integer> list = List.of(1, 5, -3, 0, 9, 55);
+        assertThat(ListExercises.sum(list)).isEqualTo(67);
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Sum when list is empty")
+    public void sumMethodEmptyList() {
+        List<Integer> list = List.of();
+        assertThat(ListExercises.sum(list)).isEqualTo(0);
+    }
 }
