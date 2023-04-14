@@ -19,20 +19,13 @@ public class PatternAwareLetterFreqGuesser implements Guesser {
      *  PATTERN. */
     public char getGuess(String pattern, List<Character> guesses) {
         var matchingWords = this.getMatchingWords(pattern);
-        var freqMatchMap = this.getFrequencyMap(matchingWords);
-        char max = freqMatchMap.entrySet().stream().filter(ch -> !guesses.contains(ch.getKey()))
-                .max((e1, e2) -> Integer.valueOf(e1.getValue()).compareTo(e2.getValue())).get().getKey();
+        var freqMatchMap = this.getLimitedFrequencyMap(matchingWords);
+        char max = GuesserHelperFunctions.mostAbundantChar(freqMatchMap, guesses);
         return max;
     }
 
-    public Map<Character, Integer> getFrequencyMap(List<String> words) {
-        Map<Character, Integer> chFreq = new TreeMap<>();
-        for(String word : words) {
-            for(char ch : word.toCharArray()) {
-                chFreq.put(ch, chFreq.getOrDefault(ch, 0) + 1);
-            }
-        }
-        return chFreq;
+    public Map<Character, Integer> getLimitedFrequencyMap(List<String> reducedWords) {
+        return GuesserHelperFunctions.getFrequencyMap(reducedWords);
     }
 
     public List<String> getMatchingWords(String pattern) {
