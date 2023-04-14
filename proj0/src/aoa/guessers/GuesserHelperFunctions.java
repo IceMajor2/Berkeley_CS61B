@@ -13,8 +13,8 @@ public class GuesserHelperFunctions {
      */
     public static Map<Character, Integer> getFrequencyMap(List<String> words) {
         Map<Character, Integer> chFreq = new TreeMap<>();
-        for(String word : words) {
-            for(char ch : word.toCharArray()) {
+        for (String word : words) {
+            for (char ch : word.toCharArray()) {
                 chFreq.put(ch, chFreq.getOrDefault(ch, 0) + 1);
             }
         }
@@ -50,6 +50,34 @@ public class GuesserHelperFunctions {
             matchingWords.add(word);
         }
         return matchingWords;
+    }
+
+    public static Map<Character, Integer> stringToMap(String pattern) {
+        Map<Character, Integer> patternMap = new TreeMap<>();
+        for (char ch : pattern.toCharArray()) {
+            if (ch == '-') {
+                continue;
+            }
+            patternMap.put(ch, patternMap.getOrDefault(ch, 0) + 1);
+        }
+        return patternMap;
+    }
+
+    public static List<String> excludeUnmatchingWords(List<String> words, String pattern, List<Character> guesses) {
+        List<String> excluded = new ArrayList<>();
+        var matchingWords = getMatchingWords(words, pattern);
+        var patternMap = stringToMap(pattern);
+        one:
+        for (String word : matchingWords) {
+            var wordMap = stringToMap(word);
+            for (char guess : guesses) {
+                if (!patternMap.containsKey(guess) && wordMap.containsKey(guess)) {
+                    continue one;
+                }
+            }
+            excluded.add(word);
+        }
+        return excluded;
     }
 
 }
