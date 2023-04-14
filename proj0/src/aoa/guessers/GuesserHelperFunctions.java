@@ -20,4 +20,11 @@ public class GuesserHelperFunctions {
         return chFreq;
     }
 
+    public static char mostAbundantChar(Map<Character, Integer> freqMap, List<Character> guesses) {
+        char max = freqMap.entrySet().stream()
+                .filter(ch -> !guesses.contains(ch.getKey()))
+                .max((e1, e2) -> Integer.valueOf(e1.getValue()).compareTo(e2.getValue())).get().getKey();
+        return max;
+    }
+
 }

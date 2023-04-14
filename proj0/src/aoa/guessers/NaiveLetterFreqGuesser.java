@@ -4,7 +4,6 @@ import aoa.utils.FileUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class NaiveLetterFreqGuesser implements Guesser {
     private final List<String> words;
@@ -21,15 +20,14 @@ public class NaiveLetterFreqGuesser implements Guesser {
     public Map<Character, Integer> getFrequencyMap() {
         return GuesserHelperFunctions.getFrequencyMap(words);
     }
-    
+
     /**
      * Returns the most common letter in WORDS that has not yet been guessed
      * (and therefore isn't present in GUESSES).
      */
     public char getGuess(List<Character> guesses) {
         var freqMap = GuesserHelperFunctions.getFrequencyMap(words);
-        char max = freqMap.entrySet().stream().filter(ch -> !guesses.contains(ch.getKey()))
-                .max((e1, e2) -> Integer.valueOf(e1.getValue()).compareTo(e2.getValue())).get().getKey();
+        char max = GuesserHelperFunctions.mostAbundantChar(freqMap, guesses);
         return max;
     }
 
