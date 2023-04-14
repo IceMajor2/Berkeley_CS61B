@@ -106,7 +106,10 @@ public class PatternAwareLetterFreqGuesserTest {
     @Order(6)
     @DisplayName("Correct list of matching words based on pattern")
     public void testGetMatchingWords() {
-        
+        PatternAwareLetterFreqGuesser palfg = new PatternAwareLetterFreqGuesser("data/example.txt");
+
+        String pattern = "-o--";
+        assertThat(palfg.getMatchingWords(pattern)).containsExactly("cool", "good", "hope");
     }
 }
 
