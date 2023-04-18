@@ -14,8 +14,23 @@ public class Closet {
         this.wardrobe = new ArrayList<>();
     }
 
+    public void updateColor(Clothing cloth, String prevColor) {
+        if(!this.wardrobe.contains(cloth)) {
+            return;
+        }
+        String type = cloth.type;
+        String currColor = cloth.color;
+        this.colorMap.get(prevColor).remove(new Clothing(type, currColor));
+        
+        var listOfColors = this.colorMap.getOrDefault(currColor, new ArrayList<>());
+        listOfColors.add(cloth);
+        this.colorMap.put(currColor, listOfColors);
+    }
+    
     public void add(Clothing cloth) {
-        wardrobe.add(cloth);
+        if(!wardrobe.contains(cloth)) {
+            wardrobe.add(cloth);
+        }
         String type = cloth.type;
         String color = cloth.color;
         List<Clothing> clothesOfColor = colorMap.getOrDefault(color, new ArrayList<>());
@@ -40,6 +55,22 @@ public class Closet {
     public List<Clothing> getItemsByDay(Map<String, String> daysToColors, String currentDay) {
         String color = daysToColors.get(currentDay);
         return getClothes(color);
+    }
+    
+    public void dyeClothes(List<String> previousColors, String toColor) {
+        for(String color : colorMap.keySet()) {
+            if(previousColors.contains(color)) {
+                List<Clothing> clothesToDye = colorMap.get(color);
+                List<Clothing> toBeUpdated = new ArrayList<>();
+                for(Clothing cloth : clothesToDye) {
+                    cloth.dyeColor(toColor);
+                    toBeUpdated.add(cloth);
+                }
+                for(Clothing cloth : toBeUpdated) {
+                    this.updateColor(cloth, color);
+                }
+            }
+        }
     }
 
     public Map<String, List<Clothing>> getColorMap() {

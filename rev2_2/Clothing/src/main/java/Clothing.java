@@ -10,7 +10,7 @@ public class Clothing {
     }
 
     public void dyeColor(String newColor) {
-        this.color = color;
+        this.color = newColor;
     }
     
     public boolean equals(Object obj) {
