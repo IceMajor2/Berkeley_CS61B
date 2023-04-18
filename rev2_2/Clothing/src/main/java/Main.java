@@ -1,4 +1,4 @@
-
+import java.util.Map;
 
 public class Main {
 
@@ -15,6 +15,9 @@ public class Main {
         closet.add(c4);
         closet.add(c5);
         System.out.println(closet.getClothes("Black"));
+        Map<String, String> daysOfColor = Map.of("Wednesday", "Pink", "Friday", "Green");
+        String currentDay = "Friday";
+        System.out.println(closet.getItemsByDay(daysOfColor, currentDay));
     }
 
 }

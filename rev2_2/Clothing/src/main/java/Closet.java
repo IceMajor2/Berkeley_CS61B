@@ -5,15 +5,15 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Closet {
-    
+
     private Map<String, List<Clothing>> colorMap;
     private List<Clothing> wardrobe;
-    
+
     public Closet() {
         this.colorMap = new HashMap<>();
         this.wardrobe = new ArrayList<>();
     }
-    
+
     public void add(Clothing cloth) {
         wardrobe.add(cloth);
         String type = cloth.type;
@@ -22,19 +22,24 @@ public class Closet {
         clothesOfColor.add(cloth);
         colorMap.put(color, clothesOfColor);
     }
-    
+
     public List<Clothing> getClothes(String color) {
         return colorMap.getOrDefault(color, new ArrayList<>());
     }
-    
+
     public List<Clothing> uniqueClothes(List<Clothing> recent) {
         List<Clothing> unique = new ArrayList<>();
-        for(Clothing cloth : recent) {
-            if(!unique.contains(cloth)) {
+        for (Clothing cloth : recent) {
+            if (!unique.contains(cloth)) {
                 unique.add(cloth);
             }
         }
         return unique;
+    }
+
+    public List<Clothing> getItemsByDay(Map<String, String> daysToColors, String currentDay) {
+        String color = daysToColors.get(currentDay);
+        return getClothes(color);
     }
 
     public Map<String, List<Clothing>> getColorMap() {
