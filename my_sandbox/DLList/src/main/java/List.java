@@ -1,9 +1,9 @@
-public class IntList {
+public class List<T> {
 
-    int item;
-    IntList next;
+    T item;
+    List<T> next;
 
-    public IntList(int item) {
+    public List(T item) {
         this.item = item;
         this.next = null;
     }
@@ -15,23 +15,23 @@ public class IntList {
         return 1 + this.next.size();
     }
     
-    public void addLast(int item) {
-        IntList pointer = this;
+    public void addLast(T item) {
+        List<T> pointer = this;
         while (true) {
             if (pointer.next == null) {
-                pointer.next = new IntList(item);
+                pointer.next = new List(item);
                 break;
             }
             pointer = pointer.next;
         }
     }
     
-    public int get(int index) {
+    public T get(int index) {
         if(index > size() - 1) {
             throw new ArrayIndexOutOfBoundsException();
         }
         
-        IntList pointer = this;
+        List<T> pointer = this;
         int current = 0;
         while(current != index) {
             pointer = pointer.next;
@@ -41,10 +41,10 @@ public class IntList {
     }
     
     public static void main(String[] args) {
-        IntList list = new IntList(5);
-        list.addLast(6);
-        list.addLast(9);
+        List<String> list = new List<>("5");
+        list.addLast("7");
+        list.addLast("lol");
         System.out.println(list.size());
-        System.out.println(list.get(2));
+        System.out.println(list.get(1));
     }
 }
