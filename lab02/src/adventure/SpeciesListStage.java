@@ -68,6 +68,9 @@ public class SpeciesListStage implements AdventureStage {
      * @param reference a reference list of animals.
      */
     private void handleResponses(List<String> reference) {
+        if(reference.isEmpty()) {
+            return;
+        }
         while (true) {
             String input = in.readLine();
             List<String> user;
