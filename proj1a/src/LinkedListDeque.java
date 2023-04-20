@@ -16,7 +16,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         System.out.println(LLD.get(0));
         System.out.println(LLD.get(1));
         System.out.println(LLD.get(2));
-        System.out.println(LLD.get(-9));
+        System.out.println(LLD.getRecursive(0));
+        System.out.println(LLD.getRecursive(1));
+        System.out.println(LLD.getRecursive(2));
     }
 
     private Node sentinel;
@@ -24,6 +26,8 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     public LinkedListDeque() {
         this.sentinel = new Node(null, 2141235, null);
+        this.sentinel.next = sentinel;
+        this.sentinel.prev = sentinel;
         this.size = 0;
     }
 
@@ -110,13 +114,13 @@ public class LinkedListDeque<T> implements Deque<T> {
         return (T) pointer.item;
     }
 
-    public void checkForRemoveExceptions() {
+    private void checkForRemoveExceptions() {
         if(size == 0) {
             throw new IndexOutOfBoundsException();
         }
     }
 
-    public void checkForGetExceptions(int index) {
+    private void checkForGetExceptions(int index) {
         if(index < 0) {
             throw new IllegalArgumentException();
         }
@@ -128,10 +132,22 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public T getRecursive(int index) {
         checkForGetExceptions(index);
-        if(index == 0) {
+        int i = 0;
+        if(index == i) {
             return (T) sentinel.next.item;
         }
-        return null;
+        i++;
+        Node pointer = sentinel.next.next;
+        return recursionHelp(pointer, index, i);
+    }
+
+    private T recursionHelp(Node pointer, int index, int currPos) {
+        if(currPos == index) {
+            return (T) pointer.item;
+        }
+        currPos++;
+        pointer = pointer.next;
+        return recursionHelp(pointer, index, currPos);
     }
 
     private class Node<T> {
