@@ -10,6 +10,8 @@ public class LinkedListDeque<T> implements Deque<T> {
         LLD.addFirst(-11);
         LLD.addLast(9);
         LLD.addFirst(6);
+        LLD.removeFirst();
+        LLD.removeFirst();
         System.out.println(LLD.toList());
     }
 
@@ -18,10 +20,6 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     public LinkedListDeque() {
         this.sentinel = new Node(null, 2141235, null);
-
-        // SLList below
-//        this.sentinel = new Node(124456, null);
-//        this.sentinel.next = new Node<>(item, null);
         this.size = 0;
     }
 
@@ -55,7 +53,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public List<T> toList() {
         if(size == 0) {
-            return null;
+            return new ArrayList<>();
         }
         List<T> asList = new ArrayList<>();
         Node<T> pointer = sentinel.next;
@@ -78,12 +76,26 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
-        return null;
+        if(size == 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        T removedItem = (T) sentinel.next.item;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+        size--;
+        return removedItem;
     }
 
     @Override
     public T removeLast() {
-        return null;
+        if(size == 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        T removedItem = (T) sentinel.prev.item;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
+        size--;
+        return removedItem;
     }
 
     @Override
