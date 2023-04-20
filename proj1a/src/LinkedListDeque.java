@@ -13,6 +13,10 @@ public class LinkedListDeque<T> implements Deque<T> {
         LLD.removeFirst();
         LLD.removeFirst();
         System.out.println(LLD.toList());
+        System.out.println(LLD.get(0));
+        System.out.println(LLD.get(1));
+        System.out.println(LLD.get(2));
+        System.out.println(LLD.get(-9));
     }
 
     private Node sentinel;
@@ -100,7 +104,19 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        return null;
+        if(index < 0) {
+            throw new IllegalArgumentException();
+        }
+        if(index + 1 > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node pointer = sentinel.next;
+        int i = 0;
+        while(i != index) {
+            pointer = pointer.next;
+            i++;
+        }
+        return (T) pointer.item;
     }
 
     @Override

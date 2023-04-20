@@ -230,4 +230,61 @@ public class LinkedListDequeTest {
 
         assertThat(L.size()).isEqualTo(2);
     }
+
+    @Test
+    public void getBasicTest() {
+        Deque<Boolean> L = new LinkedListDeque<>();
+        L.addFirst(true);
+        L.addLast(false);
+
+        boolean value = L.get(1);
+
+        assertThat(value).isFalse();
+
+        value = L.get(0);
+
+        assertThat(value).isTrue();
+    }
+
+    @Test
+    public void getTestWhenListEmpty() {
+        Deque<String> L = new LinkedListDeque<>();
+        Exception expected = null;
+        try {
+            String val = L.get(0);
+        } catch(IndexOutOfBoundsException e) {
+            expected = e;
+        }
+        assertThat(expected).isNotNull();
+    }
+
+    @Test
+    public void getTestDoesNotChangeSize() {
+        Deque<Object> L = new LinkedListDeque<>();
+        L.addLast(12);
+        L.addLast("sdka");
+        L.addFirst(5.2f);
+
+        L.get(1);
+
+        assertThat(L.size()).isEqualTo(3);
+
+        L.get(2);
+
+        assertThat(L.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void getTestWhenIndexIsNegative() {
+        Deque<Integer> L = new LinkedListDeque<>();
+        L.addFirst(2);
+        Exception expected = null;
+
+        try {
+            L.get(-1);
+        } catch(IllegalArgumentException e) {
+            expected = e;
+        }
+        assertThat(expected instanceof IllegalArgumentException).isTrue();
+    }
 }
