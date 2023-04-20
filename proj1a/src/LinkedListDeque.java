@@ -34,10 +34,6 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public void addFirst(T x) {
         size++;
-        if(size == 1) {
-            addFirstItem(x);
-            return;
-        }
         sentinel.next = new Node(sentinel, x, sentinel.next);
         sentinel.next.next.prev = sentinel.next;
     }
@@ -45,17 +41,8 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public void addLast(T x) {
         size++;
-        if(size == 1) {
-            addFirstItem(x);
-            return;
-        }
         sentinel.prev = new Node(sentinel.prev, x, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
-    }
-
-    private void addFirstItem(T x) {
-        sentinel.next = new Node(sentinel, x, sentinel);
-        sentinel.prev = sentinel.next;
     }
 
     @Override
