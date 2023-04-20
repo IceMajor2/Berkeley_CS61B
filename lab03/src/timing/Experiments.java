@@ -81,17 +81,31 @@ public class Experiments {
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
 
-        // TODO: YOUR CODE HERE
+        int ops = 10000;
 
-        return null;
+        for(int N = 1000; N <= 128000; N *= 2) {
+            Ns.add(N);
+            opCounts.add(ops);
+            SLList<Integer> list = new SLList<>();
+            for(int num = 0; num < N; num++) {
+                list.addFirst(num);
+            }
+            Stopwatch sw = new Stopwatch();
+            for(int op = 0; op < ops; op++) {
+                list.getLast();
+            }
+            times.add(sw.elapsedTime());
+        }
+
+        return new TimingData(Ns, times, opCounts);
 
     }
 
     public static void main(String[] args) {
         // TODO: Modify the following line to change the experiment you're running
-        TimingData td = timeAListConstruction();
+        TimingData td = timeSLListGetLast();
         // Modify this line to make the chart title make sense
-        String title = "Additive resizing ArrayList";
+        String title = "Getting the last item of an SLList";
 
         // Convert "times" (in seconds) and "opCounts" to nanoseconds / op
         List<Double> timesUsPerOp = new ArrayList<>();
