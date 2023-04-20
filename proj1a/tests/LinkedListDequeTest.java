@@ -287,4 +287,61 @@ public class LinkedListDequeTest {
         }
         assertThat(expected instanceof IllegalArgumentException).isTrue();
     }
+
+    @Test
+    public void getRecursiveBasicTest() {
+        Deque<Boolean> L = new LinkedListDeque<>();
+        L.addFirst(true);
+        L.addLast(false);
+
+        boolean value = L.getRecursive(1);
+
+        assertThat(value).isFalse();
+
+        value = L.getRecursive(0);
+
+        assertThat(value).isTrue();
+    }
+
+    @Test
+    public void getRecursiveTestWhenListEmpty() {
+        Deque<String> L = new LinkedListDeque<>();
+        Exception expected = null;
+        try {
+            String val = L.getRecursive(0);
+        } catch(IndexOutOfBoundsException e) {
+            expected = e;
+        }
+        assertThat(expected).isNotNull();
+    }
+
+    @Test
+    public void getRecursiveTestDoesNotChangeSize() {
+        Deque<Object> L = new LinkedListDeque<>();
+        L.addLast(12);
+        L.addLast("sdka");
+        L.addFirst(5.2f);
+
+        L.getRecursive(1);
+
+        assertThat(L.size()).isEqualTo(3);
+
+        L.getRecursive(2);
+
+        assertThat(L.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void getRecursiveTestWhenIndexIsNegative() {
+        Deque<Integer> L = new LinkedListDeque<>();
+        L.addFirst(2);
+        Exception expected = null;
+
+        try {
+            L.getRecursive(-1);
+        } catch(IllegalArgumentException e) {
+            expected = e;
+        }
+        assertThat(expected instanceof IllegalArgumentException).isTrue();
+    }
 }

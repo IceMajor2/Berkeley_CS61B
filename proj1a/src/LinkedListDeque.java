@@ -80,9 +80,7 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
-        if(size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkForRemoveExceptions();
         T removedItem = (T) sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
@@ -92,9 +90,7 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T removeLast() {
-        if(size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkForRemoveExceptions();
         T removedItem = (T) sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
@@ -104,12 +100,7 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        if(index < 0) {
-            throw new IllegalArgumentException();
-        }
-        if(index + 1 > size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkForGetExceptions(index);
         Node pointer = sentinel.next;
         int i = 0;
         while(i != index) {
@@ -119,8 +110,27 @@ public class LinkedListDeque<T> implements Deque<T> {
         return (T) pointer.item;
     }
 
+    public void checkForRemoveExceptions() {
+        if(size == 0) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    public void checkForGetExceptions(int index) {
+        if(index < 0) {
+            throw new IllegalArgumentException();
+        }
+        if(index + 1 > size) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
     @Override
     public T getRecursive(int index) {
+        checkForGetExceptions(index);
+        if(index == 0) {
+            return (T) sentinel.next.item;
+        }
         return null;
     }
 
