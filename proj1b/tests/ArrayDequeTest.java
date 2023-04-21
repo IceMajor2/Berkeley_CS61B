@@ -46,6 +46,13 @@ public class ArrayDequeTest {
     }
 
     @Test
+    public void printEmptyList() {
+        Deque<String> dq = new ArrayDeque<>();
+
+        assertThat(dq.toList()).isEqualTo(new ArrayList());
+    }
+
+    @Test
     public void addFirstBigDataTest() {
         Deque<Integer> dq = new ArrayDeque<>();
         List<Integer> check = new ArrayList<>();
@@ -77,5 +84,24 @@ public class ArrayDequeTest {
         }
 
         assertThat(dq.toList()).isEqualTo(check);
+    }
+
+    @Test
+    public void getBasicTest() {
+        Deque<Integer> dq = new ArrayDeque<>();
+
+        dq.addLast(5);
+        dq.addLast(-9);
+        dq.addFirst(3);
+        dq.addFirst(-33);
+        dq.addLast(1);
+        // [-33, 3, 5, -9, 1]
+
+        assertThat(dq.get(0)).isEqualTo(-33);
+        assertThat(dq.get(1)).isEqualTo(3);
+        assertThat(dq.get(2)).isEqualTo(5);
+        assertThat(dq.get(3)).isEqualTo(-9);
+        assertThat(dq.get(4)).isEqualTo(1);
+
     }
 }
