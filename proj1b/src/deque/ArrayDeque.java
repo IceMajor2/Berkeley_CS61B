@@ -38,7 +38,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addFirst(T x) {
-        if(this.getCapacityRatio() >= R_RATIO) {
+        if (this.getCapacityRatio() >= R_RATIO) {
             upsize();
         }
         int lastInd = array.length - 1;
@@ -48,7 +48,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addLast(T x) {
-        if(this.getCapacityRatio() >= R_RATIO) {
+        if (this.getCapacityRatio() >= R_RATIO) {
             upsize();
         }
         array[frontSize] = x;
@@ -61,7 +61,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     private void upsize() {
         T[] arr = (T[]) new Object[(int) Math.round(array.length * R_FACTOR)];
-        for(int i = 0; i < size(); i++) {
+        for (int i = 0; i < size(); i++) {
             arr[i] = this.get(i);
         }
         frontSize = size();
@@ -79,10 +79,10 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     private List<T> getFirstItems() {
         List<T> first = new ArrayList<>();
-        if(backSize == 0) {
+        if (backSize == 0) {
             return first;
         }
-        for(int i = array.length - backSize; i < array.length; i++) {
+        for (int i = array.length - backSize; i < array.length; i++) {
             first.add(array[i]);
         }
         return first;
@@ -90,7 +90,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     private List<T> getLastItems() {
         List<T> last = new ArrayList<>();
-        for(int i = 0; i < frontSize; i++) {
+        for (int i = 0; i < frontSize; i++) {
             last.add(array[i]);
         }
         return last;
@@ -108,24 +108,31 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeFirst() {
+        if (size() == 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        int cursor = backSize != 0 ? array.length - backSize : array.length - 1;
         array[array.length - backSize] = null;
         return null;
     }
 
     @Override
     public T removeLast() {
+        if (size() == 0) {
+            throw new IndexOutOfBoundsException();
+        }
         return null;
     }
 
     @Override
     public T get(int index) {
-        if(index < 0) {
+        if (index < 0) {
             throw new IllegalArgumentException();
         }
-        if(index >= size()) {
+        if (index >= size()) {
             throw new IndexOutOfBoundsException();
         }
-        if(index < backSize) {
+        if (index < backSize) {
             // moving the "cursor" on the back array representing FIRST numbers
             int cursor = backSize != 0 ? array.length - backSize : array.length - 1;
             // moving the cursor onto the back array's actual desired number

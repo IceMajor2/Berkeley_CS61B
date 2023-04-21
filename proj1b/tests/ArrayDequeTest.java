@@ -158,6 +158,23 @@ public class ArrayDequeTest {
     }
 
     @Test
+    public void removeMethodsThrowRightExceptions() {
+        Exception exc = null;
+        Deque<Long> dq = new ArrayDeque<>();
+        try {
+            dq.removeFirst();
+        } catch(IndexOutOfBoundsException e) {
+            exc = e;
+        }
+        assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
+        try {
+            dq.removeLast();
+        } catch(IndexOutOfBoundsException e) {
+            exc = e;
+        }
+    }
+
+    @Test
     public void removeFirstBasicTest() {
         Deque<Integer> dq = new ArrayDeque<>();
         dq.addLast(5);
