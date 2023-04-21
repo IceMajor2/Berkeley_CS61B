@@ -2,19 +2,12 @@ package deque;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ArrayDeque<T> implements deque.Deque<T> {
 
     public static void main(String[] args) {
-        Deque<Integer> deque = new ArrayDeque<>();
-        deque.addFirst(5);
-        deque.addFirst(-99);
-        deque.addLast(4);
-        deque.addFirst(-9);
-        deque.addLast(-5239);
-
-        //deque.removeFirst();
-        System.out.println(deque.toList());
+        
     }
 
     private static double R_FACTOR = 1.5;
@@ -72,6 +65,9 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeFirst() {
+        if(size() == 0) {
+            throw new NullPointerException();
+        }
         T removed = array[firstIndex];
         array[firstIndex] = null;
         size--;
@@ -81,8 +77,11 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeLast() {
+        if(size() == 0) {
+            throw new NullPointerException();
+        }
         T removed = array[lastIndex];
-        array[firstIndex] = null;
+        array[lastIndex] = null;
         size--;
         lastIndex = (lastIndex - 1 == -1) ? array.length - 1 : lastIndex - 1;
         return removed;

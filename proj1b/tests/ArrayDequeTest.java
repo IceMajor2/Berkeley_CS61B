@@ -1,5 +1,6 @@
 import deque.ArrayDeque;
 import deque.Deque;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -153,15 +154,17 @@ public class ArrayDequeTest {
         Deque<Long> dq = new ArrayDeque<>();
         try {
             dq.removeFirst();
-        } catch(IndexOutOfBoundsException e) {
+        } catch(NullPointerException e) {
             exc = e;
         }
-        assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
+        assertThat(exc instanceof NullPointerException).isTrue();
+        exc = null;
         try {
             dq.removeLast();
-        } catch(IndexOutOfBoundsException e) {
+        } catch(NullPointerException e) {
             exc = e;
         }
+        assertThat(exc instanceof NullPointerException).isTrue();
     }
 
     @Test
@@ -218,7 +221,7 @@ public class ArrayDequeTest {
         var removedDq2 = dq.removeFirst();
         var removedDq3 = dq.removeLast();
 
-        assertThat(removed1 == removedDq3 && removed2 == removedDq2 &&
+        assertThat(removed1 == removedDq1 && removed2 == removedDq2 &&
                 removed3 == removedDq3).isTrue();
 
         for(int i = 0; i < 1000; i++) {
@@ -226,7 +229,7 @@ public class ArrayDequeTest {
             check.remove(0);
             dq.removeLast();
             check.remove(check.size() - 1);
-            assertThat(dq).isEqualTo(check);
+            assertThat(dq.toList()).isEqualTo(check);
         }
     }
 
