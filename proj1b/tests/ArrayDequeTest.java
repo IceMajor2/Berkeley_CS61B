@@ -132,4 +132,106 @@ public class ArrayDequeTest {
         assertThat(dq.get(4)).isEqualTo(1);
 
     }
+
+    @Test
+    public void testForEmptiness() {
+        Deque<Object> dq = new ArrayDeque<>();
+        boolean val = dq.isEmpty();
+        assertThat(val).isTrue();
+
+        dq.addLast(5);
+        val = dq.isEmpty();
+        assertThat(val).isFalse();
+
+        dq.removeFirst();
+        val = dq.isEmpty();
+        assertThat(val).isTrue();
+    }
+
+    @Test
+    public void testForEmptinessAndSizeBigData() {
+        Deque<Integer> dq = this.getBigDataArrayDeque();
+        int expectedSize = 128000;
+
+        assertThat(dq.size()).isEqualTo(expectedSize);
+        assertThat(dq.isEmpty()).isFalse();
+    }
+
+    @Test
+    public void removeFirstBasicTest() {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.addLast(5);
+        dq.addLast(2);
+        dq.addLast(6);
+        dq.removeFirst();
+
+        assertThat(dq.toList()).containsExactly(2, 6).inOrder();
+
+        dq.removeFirst();
+
+        assertThat(dq.toList()).containsExactly(6).inOrder();
+    }
+
+    @Test
+    public void removeLastBasicTest() {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.addFirst(5);
+        dq.addFirst(2);
+        dq.addFirst(6);
+        dq.removeLast();
+
+        assertThat(dq.toList()).containsExactly(6, 2).inOrder();
+
+        dq.removeLast();
+
+        assertThat(dq.toList()).containsExactly(6).inOrder();
+
+        dq.removeLast();
+
+        assertThat(dq.toList()).isEmpty();
+
+        Exception exc = null;
+        try {
+            dq.removeLast();
+        } catch(NullPointerException e) {
+            exc = e;
+        }
+        assertThat(exc instanceof NullPointerException && dq.toList().isEmpty()).isTrue();
+    }
+
+    @Test
+    public void removeFirstAndLastBigData() {
+        Deque<Integer> dq = new ArrayDeque<>();
+        List<Integer> check = new ArrayList<>();
+
+        for(int i = 0; i < 128000; i++) {
+            Random random = new Random();
+            int randomNum = random.nextInt(500000) - 250000;
+            dq.addLast(randomNum);
+            check.add(randomNum);
+        }
+        check.remove(check.size() - 1);
+        check.remove(0);
+        check.remove(check.size() - 1);
+        dq.removeLast();
+        dq.removeFirst();
+        dq.removeLast();
+        for(int i = 0; i < 1000; i++) {
+            dq.removeFirst();
+            check.remove(0);
+            dq.removeLast();
+            check.remove(check.size() - 1);
+        }
+        assertThat(dq).isEqualTo(check);
+    }
+
+    private Deque<Integer> getBigDataArrayDeque() {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for(int i = 0; i < 128000; i++) {
+            Random random = new Random();
+            int randomNum = random.nextInt(500000) - 250000;
+            dq.addLast(randomNum);
+        }
+        return dq;
+    }
 }
