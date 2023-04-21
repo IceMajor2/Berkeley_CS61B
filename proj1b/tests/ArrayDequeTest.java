@@ -1,12 +1,10 @@
 import deque.ArrayDeque;
 import deque.Deque;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -52,26 +50,20 @@ public class ArrayDequeTest {
         assertThat(dq.toList()).isEqualTo(new ArrayList());
     }
 
-    @Test
     public void addFirstBigDataTest() {
-        Deque<Integer> dq = new ArrayDeque<>();
-        List<Integer> check = new ArrayList<>();
-
+        Deque<Integer> deque = new ArrayDeque<>();
+        List<Integer> expected = new ArrayList<>();
         for(int i = 0; i < 128000; i++) {
             Random random = new Random();
             int randomNum = random.nextInt(500000) - 250000;
-            dq.addFirst(randomNum);
-            check.add(randomNum);
+            deque.addFirst(randomNum);
+            expected.add(0, randomNum);
         }
-        List<Integer> reversed = new ArrayList<>();
-        for(int i = check.size() - 1; i >= 0; i--) {
-            reversed.add(check.get(i));
-        }
-        check = reversed;
-        assertThat(dq.toList()).isEqualTo(check);
+
+        assertThat(deque.toList()).isEqualTo(expected);
     }
 
-    @Test
+
     public void addLastBigDataTest() {
         Deque<Integer> dq = new ArrayDeque<>();
         List<Integer> check = new ArrayList<>();

@@ -1,19 +1,20 @@
 package deque;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ArrayDeque<T> implements deque.Deque<T> {
 
     public static void main(String[] args) {
-        Deque<Integer> dq = new ArrayDeque<>();
-        dq.addLast(5);
-        dq.addFirst(3);
-        dq.addLast(77);
-        dq.addFirst(-9);
-        dq.addLast(23123);
+        Deque<Integer> deque = new ArrayDeque<>();
+        deque.addFirst(5);
+        deque.addFirst(-99);
+        deque.addLast(4);
+        deque.addFirst(-9);
+        deque.addLast(-5239);
+
+        //deque.removeFirst();
+        System.out.println(deque.toList());
     }
 
     private static double R_FACTOR = 1.5;
@@ -33,20 +34,17 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addFirst(T x) {
-        if(size == 0) {
-            array[0] = x;
-            size++;
-            return;
-        }
         size++;
-        firstIndex = newFirstIndex(firstIndex);
+        firstIndex = (firstIndex - 1 == -1) ? array.length - 1 : firstIndex - 1;
+        lastIndex = (size == 1) ? firstIndex : lastIndex;
         array[firstIndex] = x;
     }
 
     @Override
     public void addLast(T x) {
         size++;
-        this.lastIndex = newLastIndex(lastIndex);
+        lastIndex = (lastIndex + 1 == array.length) ? 0 : lastIndex + 1;
+        firstIndex = (size == 1) ? lastIndex : firstIndex;
         array[lastIndex] = x;
     }
 
@@ -74,32 +72,24 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeFirst() {
-        return null;
+        T removed = array[firstIndex];
+        array[firstIndex] = null;
+        size--;
+        firstIndex = (firstIndex + 1 == array.length) ? 0 : firstIndex + 1;
+        return removed;
     }
 
     @Override
     public T removeLast() {
-        return null;
+        T removed = array[lastIndex];
+        array[firstIndex] = null;
+        size--;
+        lastIndex = (lastIndex - 1 == -1) ? array.length - 1 : lastIndex - 1;
+        return removed;
     }
 
     @Override
     public T get(int index) {
         return null;
-    }
-
-    private int newFirstIndex(int prevFirst) {
-        int newIndex = prevFirst - 1;
-        if(newIndex < 0) {
-            newIndex = array.length - 1;
-        }
-        return newIndex;
-    }
-
-    private int newLastIndex(int prevLast) {
-        int newIndex = prevLast;
-        while(array[newIndex] != null) {
-            newIndex++;
-        }
-        return newIndex;
     }
 }
