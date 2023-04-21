@@ -62,8 +62,6 @@ public class ArrayDequeTest {
             int randomNum = random.nextInt(500000) - 250000;
             dq.addFirst(randomNum);
             check.add(randomNum);
-
-
         }
         List<Integer> reversed = new ArrayList<>();
         for(int i = check.size() - 1; i >= 0; i--) {
