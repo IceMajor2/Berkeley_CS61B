@@ -1,3 +1,5 @@
+package deque;
+
 import java.util.List;
 
 /**
@@ -56,7 +58,7 @@ public interface Deque<T> {
     T removeLast();
 
     /**
-     * The Deque abstract data type does not typically have a get method,
+     * The deque.Deque abstract data type does not typically have a get method,
      * but we've included this extra operation to provide you with some
      * extra programming practice. Gets the element. Does
      * not alter the deque.
