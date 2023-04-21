@@ -38,6 +38,9 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addFirst(T x) {
+        if(this.getCapacityRatio() >= R_RATIO) {
+            upsize();
+        }
         int lastInd = array.length - 1;
         array[lastInd - backSize] = x;
         backSize++;
@@ -45,12 +48,25 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addLast(T x) {
+        if(this.getCapacityRatio() >= R_RATIO) {
+            upsize();
+        }
         array[frontSize] = x;
         frontSize++;
     }
 
+    private double getCapacityRatio() {
+        return (double) this.size() / array.length;
+    }
+
     private void upsize() {
-        T[] arr = (T[]) new Object[array.length * (int) R_FACTOR + 1];
+        T[] arr = (T[]) new Object[(int) Math.round(array.length * R_FACTOR)];
+        for(int i = 0; i < size(); i++) {
+            arr[i] = this.get(i);
+        }
+        frontSize = size();
+        backSize = 0;
+        this.array = arr;
     }
 
     @Override
@@ -102,6 +118,12 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T get(int index) {
+        if(index < 0) {
+            throw new IllegalArgumentException();
+        }
+        if(index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
         if(index < backSize) {
             // moving the "cursor" on the back array representing FIRST numbers
             int cursor = backSize != 0 ? array.length - backSize : array.length - 1;
@@ -109,7 +131,6 @@ public class ArrayDeque<T> implements deque.Deque<T> {
             cursor += index;
             return array[cursor];
         }
-        //System.out.println(Arrays.toString(array));
         // cursor at the first number of the array representing LAST numbers
         int cursor = 0;
         // cursor on the front array's actual desired number

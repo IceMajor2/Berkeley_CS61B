@@ -62,6 +62,8 @@ public class ArrayDequeTest {
             int randomNum = random.nextInt(500000) - 250000;
             dq.addFirst(randomNum);
             check.add(randomNum);
+
+
         }
         List<Integer> reversed = new ArrayList<>();
         for(int i = check.size() - 1; i >= 0; i--) {
@@ -84,6 +86,32 @@ public class ArrayDequeTest {
         }
 
         assertThat(dq.toList()).isEqualTo(check);
+    }
+
+    @Test
+    public void getMethodThrowsRightExceptions() {
+        Exception exc = null;
+        Deque<Long> dq = new ArrayDeque<>();
+        try {
+            dq.get(1);
+        } catch(IndexOutOfBoundsException e) {
+            exc = e;
+        }
+        assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
+        dq.addLast(5l);
+        try {
+            dq.get(1);
+        } catch(IndexOutOfBoundsException e) {
+            exc = e;
+        }
+        assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
+
+        try {
+            dq.get(-5);
+        } catch(IllegalArgumentException e) {
+            exc = e;
+        }
+        assertThat(exc instanceof IllegalArgumentException).isTrue();
     }
 
     @Test
