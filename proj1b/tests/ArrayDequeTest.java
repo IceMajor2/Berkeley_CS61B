@@ -201,28 +201,26 @@ public class ArrayDequeTest {
 
     @Test
     public void removeFirstAndLastBigData() {
-        Deque<Integer> dq = new ArrayDeque<>();
-        List<Integer> check = new ArrayList<>();
+        Deque<Integer> dq = this.getBigDataArrayDeque();
+        List<Integer> check = new ArrayList<>(dq.toList());
 
-        for(int i = 0; i < 128000; i++) {
-            Random random = new Random();
-            int randomNum = random.nextInt(500000) - 250000;
-            dq.addLast(randomNum);
-            check.add(randomNum);
-        }
-        check.remove(check.size() - 1);
-        check.remove(0);
-        check.remove(check.size() - 1);
-        dq.removeLast();
-        dq.removeFirst();
-        dq.removeLast();
+        var removed1 = check.remove(check.size() - 1);
+        var removed2 = check.remove(0);
+        var removed3 = check.remove(check.size() - 1);
+        var removedDq1 = dq.removeLast();
+        var removedDq2 = dq.removeFirst();
+        var removedDq3 = dq.removeLast();
+
+        assertThat(removed1 == removedDq3 && removed2 == removedDq2 &&
+                removed3 == removedDq3).isTrue();
+
         for(int i = 0; i < 1000; i++) {
             dq.removeFirst();
             check.remove(0);
             dq.removeLast();
             check.remove(check.size() - 1);
+            assertThat(dq).isEqualTo(check);
         }
-        assertThat(dq).isEqualTo(check);
     }
 
     private Deque<Integer> getBigDataArrayDeque() {

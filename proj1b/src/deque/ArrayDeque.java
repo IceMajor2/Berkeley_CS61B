@@ -108,7 +108,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeFirst() {
-
+        array[array.length - backSize] = null;
         return null;
     }
 
