@@ -111,8 +111,12 @@ public class ArrayDeque<T> implements deque.Deque<T> {
         if (size() == 0) {
             throw new IndexOutOfBoundsException();
         }
-        int cursor = backSize != 0 ? array.length - backSize : array.length - 1;
-        array[array.length - backSize] = null;
+        int cursor = 0;
+        if (backSize != 0) {
+            cursor = array.length - backSize;
+        }
+        
+
         return null;
     }
 
