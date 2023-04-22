@@ -87,8 +87,19 @@ public class ArrayDeque<T> implements deque.Deque<T> {
         return removed;
     }
 
+    private void downsize() {
+
+    }
+
     @Override
     public T get(int index) {
-        return null;
+        if(index < 0) {
+            throw new IllegalArgumentException();
+        }
+        if(index + 1 > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        int getIndex = (firstIndex + index >= array.length) ? ((firstIndex + index) % array.length) : firstIndex + index;
+        return array[getIndex];
     }
 }

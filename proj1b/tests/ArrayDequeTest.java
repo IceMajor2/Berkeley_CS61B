@@ -116,11 +116,16 @@ public class ArrayDequeTest {
         dq.addLast(1);
         // [-33, 3, 5, -9, 1]
 
-        assertThat(dq.get(0)).isEqualTo(-33);
-        assertThat(dq.get(1)).isEqualTo(3);
-        assertThat(dq.get(2)).isEqualTo(5);
-        assertThat(dq.get(3)).isEqualTo(-9);
-        assertThat(dq.get(4)).isEqualTo(1);
+        int index0 = dq.get(0);
+        int index1 = dq.get(1);
+        int index2 = dq.get(2);
+        int index3 = dq.get(3);
+        int index4 = dq.get(4);
+        assertThat(index0).isEqualTo(-33);
+        assertThat(index1).isEqualTo(3);
+        assertThat(index2).isEqualTo(5);
+        assertThat(index3).isEqualTo(-9);
+        assertThat(index4).isEqualTo(1);
 
     }
 
