@@ -10,7 +10,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
     public static void main(String[] args) {
         Deque<Integer> dq = new ArrayDeque<>();
         Random rnd = new Random();
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             dq.addFirst(rnd.nextInt(300));
             dq.addLast(rnd.nextInt(500));
         }
@@ -18,7 +18,8 @@ public class ArrayDeque<T> implements deque.Deque<T> {
     }
 
     private static double R_FACTOR = 1.5;
-    private static double R_RATIO = 0.75;
+    private static double R_RATIO_UPPER = 0.75;
+    private static double R_RATIO_LOWER = 0.75;
 
     private T[] array;
     private int size;
@@ -34,7 +35,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addFirst(T x) {
-        if(getCurrentAbundance() >= R_RATIO) {
+        if (getCurrentAbundance() >= R_RATIO_UPPER) {
             upsize();
         }
         size++;
@@ -45,7 +46,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addLast(T x) {
-        if(getCurrentAbundance() >= R_RATIO) {
+        if (getCurrentAbundance() >= R_RATIO_UPPER) {
             upsize();
         }
         size++;
@@ -57,9 +58,9 @@ public class ArrayDeque<T> implements deque.Deque<T> {
     @Override
     public List<T> toList() {
         List<T> list = new ArrayList<>();
-        for(int i = firstIndex, iterations = 0; iterations < size; i++, iterations++) {
+        for (int i = firstIndex, iterations = 0; iterations < size; i++, iterations++) {
             list.add(array[i]);
-            if(i == array.length - 1) {
+            if (i == array.length - 1) {
                 i = -1;
             }
         }
@@ -78,8 +79,11 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeFirst() {
-        if(size() == 0) {
+        if (size() == 0) {
             throw new NullPointerException();
+        }
+        if(getCurrentAbundance() <= 0.25) {
+            downsize();
         }
         T removed = array[firstIndex];
         array[firstIndex] = null;
@@ -90,8 +94,11 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T removeLast() {
-        if(size() == 0) {
+        if (size() == 0) {
             throw new NullPointerException();
+        }
+        if(getCurrentAbundance() <= 0.25) {
+            downsize();
         }
         T removed = array[lastIndex];
         array[lastIndex] = null;
@@ -102,10 +109,10 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public T get(int index) {
-        if(index < 0) {
+        if (index < 0) {
             throw new IllegalArgumentException();
         }
-        if(index + 1 > size) {
+        if (index + 1 > size) {
             throw new IndexOutOfBoundsException();
         }
         int getIndex = (firstIndex + index >= array.length) ? ((firstIndex + index) % array.length) : firstIndex + index;
@@ -114,7 +121,7 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     private void upsize() {
         T[] biggerArr = (T[]) new Object[(int) Math.round(array.length * R_FACTOR)];
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             biggerArr[i] = this.get(i);
         }
         this.array = biggerArr;
@@ -123,7 +130,13 @@ public class ArrayDeque<T> implements deque.Deque<T> {
     }
 
     private void downsize() {
-
+        T[] smallerArr = (T[]) new Object[(int) Math.round(array.length / R_FACTOR)];
+        for (int i = 0; i < size; i++) {
+            smallerArr[i] = this.get(i);
+        }
+        this.array = smallerArr;
+        firstIndex = 0;
+        lastIndex = size - 1;
     }
 
     private double getCurrentAbundance() {

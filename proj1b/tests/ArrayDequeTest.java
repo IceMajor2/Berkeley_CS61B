@@ -1,6 +1,9 @@
 import deque.ArrayDeque;
 import deque.Deque;
+import edu.princeton.cs.algs4.Stopwatch;
+import jh61b.utils.RuntimeInstrumentation;
 import org.apache.commons.lang3.ObjectUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -212,6 +215,49 @@ public class ArrayDequeTest {
             exc = e;
         }
         assertThat(exc instanceof NullPointerException && dq.toList().isEmpty()).isTrue();
+    }
+
+    @Test
+    public void removeMethodsTimingTest() {
+        Deque<Integer> dqBig = new ArrayDeque<>();
+        Deque<Integer> dqMedium = new ArrayDeque<>();
+        Deque<Integer> dqSmall = new ArrayDeque<>();
+
+        Random rnd = new Random();
+        for(int i = 0; i < 128000; i++) {
+            int randNum = rnd.nextInt(100000) - 50000;
+            if(i < 16000) {
+                dqSmall.addFirst(randNum);
+            }
+            if(i < 64000) {
+                dqMedium.addFirst(randNum);
+            }
+            dqBig.addFirst(randNum);
+        }
+
+        double[] times = new double[3];
+        Stopwatch sw = new Stopwatch();
+        for(int i = 0; i < 8000; i++) {
+            dqSmall.removeFirst();
+            dqSmall.removeLast();
+        }
+        times[0] = sw.elapsedTime();
+
+        sw = new Stopwatch();
+        for(int i = 0; i < 32000; i++) {
+            dqMedium.removeFirst();
+            dqMedium.removeLast();
+        }
+        times[1] = sw.elapsedTime();
+
+        sw = new Stopwatch();
+        for(int i = 0; i < 64000; i++) {
+            dqBig.removeFirst();
+            dqBig.removeLast();
+        }
+        times[2] = sw.elapsedTime();
+
+        assertThat(times[0] < 0.5 && times[1] < 0.5 && times[2] < 0.5).isTrue();
     }
 
     @Test
