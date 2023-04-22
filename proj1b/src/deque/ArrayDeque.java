@@ -1,5 +1,6 @@
 package deque;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,7 +8,13 @@ import java.util.Random;
 public class ArrayDeque<T> implements deque.Deque<T> {
 
     public static void main(String[] args) {
-        
+        Deque<Integer> dq = new ArrayDeque<>();
+        Random rnd = new Random();
+        for(int i = 0; i < 6; i++) {
+            dq.addFirst(rnd.nextInt(300));
+            dq.addLast(rnd.nextInt(500));
+        }
+        System.out.println(dq.toList());
     }
 
     private static double R_FACTOR = 1.5;
@@ -27,6 +34,9 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addFirst(T x) {
+        if(getCurrentAbundance() >= R_RATIO) {
+            upsize();
+        }
         size++;
         firstIndex = (firstIndex - 1 == -1) ? array.length - 1 : firstIndex - 1;
         lastIndex = (size == 1) ? firstIndex : lastIndex;
@@ -35,6 +45,9 @@ public class ArrayDeque<T> implements deque.Deque<T> {
 
     @Override
     public void addLast(T x) {
+        if(getCurrentAbundance() >= R_RATIO) {
+            upsize();
+        }
         size++;
         lastIndex = (lastIndex + 1 == array.length) ? 0 : lastIndex + 1;
         firstIndex = (size == 1) ? lastIndex : firstIndex;
@@ -87,10 +100,6 @@ public class ArrayDeque<T> implements deque.Deque<T> {
         return removed;
     }
 
-    private void downsize() {
-
-    }
-
     @Override
     public T get(int index) {
         if(index < 0) {
@@ -101,5 +110,23 @@ public class ArrayDeque<T> implements deque.Deque<T> {
         }
         int getIndex = (firstIndex + index >= array.length) ? ((firstIndex + index) % array.length) : firstIndex + index;
         return array[getIndex];
+    }
+
+    private void upsize() {
+        T[] biggerArr = (T[]) new Object[(int) Math.round(array.length * R_FACTOR)];
+        for(int i = 0; i < size; i++) {
+            biggerArr[i] = this.get(i);
+        }
+        this.array = biggerArr;
+        firstIndex = 0;
+        lastIndex = size - 1;
+    }
+
+    private void downsize() {
+
+    }
+
+    private double getCurrentAbundance() {
+        return (double) size / array.length;
     }
 }

@@ -54,7 +54,7 @@ public class ArrayDequeTest {
     public void addFirstBigDataTest() {
         Deque<Integer> deque = new ArrayDeque<>();
         List<Integer> expected = new ArrayList<>();
-        for(int i = 0; i < 128000; i++) {
+        for (int i = 0; i < 128000; i++) {
             Random random = new Random();
             int randomNum = random.nextInt(500000) - 250000;
             deque.addFirst(randomNum);
@@ -64,12 +64,12 @@ public class ArrayDequeTest {
         assertThat(deque.toList()).isEqualTo(expected);
     }
 
-
+    @Test
     public void addLastBigDataTest() {
         Deque<Integer> dq = new ArrayDeque<>();
         List<Integer> check = new ArrayList<>();
 
-        for(int i = 0; i < 128000; i++) {
+        for (int i = 0; i < 128000; i++) {
             Random random = new Random();
             int randomNum = random.nextInt(500000) - 250000;
             dq.addLast(randomNum);
@@ -85,21 +85,21 @@ public class ArrayDequeTest {
         Deque<Long> dq = new ArrayDeque<>();
         try {
             dq.get(1);
-        } catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             exc = e;
         }
         assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
         dq.addLast(5l);
         try {
             dq.get(1);
-        } catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             exc = e;
         }
         assertThat(exc instanceof IndexOutOfBoundsException).isTrue();
 
         try {
             dq.get(-5);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             exc = e;
         }
         assertThat(exc instanceof IllegalArgumentException).isTrue();
@@ -159,14 +159,14 @@ public class ArrayDequeTest {
         Deque<Long> dq = new ArrayDeque<>();
         try {
             dq.removeFirst();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             exc = e;
         }
         assertThat(exc instanceof NullPointerException).isTrue();
         exc = null;
         try {
             dq.removeLast();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             exc = e;
         }
         assertThat(exc instanceof NullPointerException).isTrue();
@@ -208,7 +208,7 @@ public class ArrayDequeTest {
         Exception exc = null;
         try {
             dq.removeLast();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             exc = e;
         }
         assertThat(exc instanceof NullPointerException && dq.toList().isEmpty()).isTrue();
@@ -229,7 +229,7 @@ public class ArrayDequeTest {
         assertThat(removed1 == removedDq1 && removed2 == removedDq2 &&
                 removed3 == removedDq3).isTrue();
 
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             dq.removeFirst();
             check.remove(0);
             dq.removeLast();
@@ -240,7 +240,7 @@ public class ArrayDequeTest {
 
     private Deque<Integer> getBigDataArrayDeque() {
         Deque<Integer> dq = new ArrayDeque<>();
-        for(int i = 0; i < 128000; i++) {
+        for (int i = 0; i < 128000; i++) {
             Random random = new Random();
             int randomNum = random.nextInt(500000) - 250000;
             dq.addLast(randomNum);
