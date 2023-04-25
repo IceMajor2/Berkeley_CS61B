@@ -1,5 +1,6 @@
 package gh2;
 
+import deque.ArrayDeque;
 import deque.Deque;
 // TODO: maybe more imports
 
@@ -12,8 +13,8 @@ public class GuitarString {
     private static final double DECAY = .996; // energy decay factor
 
     /* Buffer for storing sound data. */
-    // TODO: uncomment the following line once you're ready to start this portion
-    // private Deque<Double> buffer;
+    private Deque<Double> buffer;
+    private int capacity;
 
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
@@ -21,6 +22,11 @@ public class GuitarString {
         //       cast the result of this division operation into an int. For
         //       better accuracy, use the Math.round() function before casting.
         //       Your should initially fill your buffer array with zeros.
+        this.buffer = new ArrayDeque<>();
+        this.capacity = (int) Math.round(SR / frequency);
+        for(int i = 0; i < capacity; i++) {
+            buffer.addFirst(0d);
+        }
     }
 
 
