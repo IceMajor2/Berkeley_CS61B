@@ -2,6 +2,8 @@ import org.junit.jupiter.api.*;
 import deque.Deque;
 import deque.ArrayDeque;
 
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 
 public class ArrayDequeTest {
@@ -31,7 +33,28 @@ public class ArrayDequeTest {
 
     @Test
     public void equalsTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad2 = new ArrayDeque<>();
 
+        ad1.addFirst(5);
+        ad1.addLast(-99);
+        ad1.addFirst(-213);
+        ad1.addLast(0);
+
+        ad2.addFirst(0);
+        ad2.addLast(-99);
+        ad2.addFirst(5);
+        ad2.addLast(-213);
+
+        assertThat(ad1).isEqualTo(ad2);
+
+        ad1.addLast(0);
+
+        assertThat(ad1).isNotEqualTo(ad2);
+
+        List<Integer> list = ad1.toList();
+
+        assertThat(list).isNotEqualTo(ad1);
     }
 
     @Test
