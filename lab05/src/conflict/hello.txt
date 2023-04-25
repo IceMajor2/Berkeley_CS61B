@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Hello, I am a 61B student!
+=======
+Hello, I am NOT a 61A student!
+>>>>>>> 4bedf22c0f43d40f067d9de5b6e691e893edb4cb
