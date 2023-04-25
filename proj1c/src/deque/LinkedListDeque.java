@@ -6,6 +6,19 @@ import java.util.List;
 
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
+    public static void main(String[] args) {
+        Deque<Integer> d1 = new LinkedListDeque<>();
+        Deque<Integer> d2 = new LinkedListDeque<>();
+        d1.addLast(5);
+        d2.addLast(5);
+        d1.addLast(4);
+        d2.addLast(4);
+        d2.addFirst(2);
+        d1.addLast(2);
+
+        System.out.println(d1.equals(d2));
+    }
+
     private Node sentinel;
     private int size;
 
@@ -56,6 +69,34 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public int size() {
         return size;
+    }
+
+    public boolean equals(Object other) {
+        if(this == other) {
+            return true;
+        }
+        
+        if(other instanceof LinkedListDeque oLLD) {
+            if(this.size != oLLD.size) {
+                return false;
+            }
+            for(T x : this) {
+                if(!oLLD.contains(x)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean contains(T x) {
+        for(T object : this) {
+            if(x.equals(object)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
