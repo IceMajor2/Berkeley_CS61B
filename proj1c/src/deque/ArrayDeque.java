@@ -1,10 +1,10 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private static double R_FACTOR = 1.5;
     private static double R_RATIO_UPPER = 0.75;
@@ -20,6 +20,10 @@ public class ArrayDeque<T> implements Deque<T> {
         this.size = 0;
         this.firstIndex = 0;
         this.lastIndex = 0;
+    }
+
+    public Iterator<T> iterator() {
+        return null;
     }
 
     @Override

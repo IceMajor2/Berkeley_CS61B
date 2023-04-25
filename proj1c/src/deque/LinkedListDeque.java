@@ -1,9 +1,10 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class LinkedListDeque<T> implements Deque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     private Node sentinel;
     private int size;
@@ -13,6 +14,10 @@ public class LinkedListDeque<T> implements Deque<T> {
         this.sentinel.next = sentinel;
         this.sentinel.prev = sentinel;
         this.size = 0;
+    }
+
+    public Iterator<T> iterator() {
+        return new LinkedListIterator<T>();
     }
 
     @Override
@@ -31,12 +36,12 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public List<T> toList() {
-        if(size == 0) {
+        if (size == 0) {
             return new ArrayList<>();
         }
         List<T> asList = new ArrayList<>();
         Node<T> pointer = sentinel.next;
-        while(pointer != sentinel) {
+        while (pointer != sentinel) {
             asList.add(pointer.item);
             pointer = pointer.next;
         }
@@ -78,7 +83,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         checkForGetExceptions(index);
         Node pointer = sentinel.next;
         int i = 0;
-        while(i != index) {
+        while (i != index) {
             pointer = pointer.next;
             i++;
         }
@@ -86,16 +91,16 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     private void checkForRemoveExceptions() {
-        if(size == 0) {
+        if (size == 0) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     private void checkForGetExceptions(int index) {
-        if(index < 0) {
+        if (index < 0) {
             throw new IllegalArgumentException();
         }
-        if(index + 1 > size) {
+        if (index + 1 > size) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -104,7 +109,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     public T getRecursive(int index) {
         checkForGetExceptions(index);
         int i = 0;
-        if(index == i) {
+        if (index == i) {
             return (T) sentinel.next.item;
         }
         i++;
@@ -113,7 +118,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     private T recursionHelp(Node pointer, int index, int currPos) {
-        if(currPos == index) {
+        if (currPos == index) {
             return (T) pointer.item;
         }
         currPos++;
@@ -131,6 +136,30 @@ public class LinkedListDeque<T> implements Deque<T> {
             this.prev = prev;
             this.item = item;
             this.next = next;
+        }
+    }
+
+    private class LinkedListIterator<T> implements Iterator<T> {
+
+        private int pos;
+
+        public LinkedListIterator() {
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(this.pos < size) {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public T next() {
+            T toReturn = (T) get(this.pos);
+            pos++;
+            return toReturn;
         }
     }
 }
