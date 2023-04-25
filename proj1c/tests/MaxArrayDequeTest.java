@@ -95,4 +95,37 @@ public class MaxArrayDequeTest {
         String shortest = dq.max();
         assertThat(shortest).isEqualTo("Gry");
     }
+
+    @Test
+    public void comparatorAsArgumentTest() {
+
+        MaxArrayDeque<String> dq = new MaxArrayDeque<>();
+
+        dq.addFirst("FIFA");
+        dq.addFirst("Max Payne");
+        dq.addLast("Grand Theft Auto IV");
+        dq.addLast("Mario");
+
+        Comparator<String> compUpperCase = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int upper1 = 0;
+                int upper2 = 0;
+                for(char ch1 : o1.toCharArray()) {
+                    if(Character.isUpperCase(ch1)) {
+                        upper1++;
+                    }
+                }
+                for(char ch2 : o2.toCharArray()) {
+                    if(Character.isUpperCase(ch2)) {
+                        upper2++;
+                    }
+                }
+                return Integer.valueOf(upper1).compareTo(upper2);
+            }
+        };
+
+        String mostUpperCaseLetters = dq.max(compUpperCase);
+        assertThat(mostUpperCaseLetters).isEqualTo("Grand Theft Auto IV");
+    }
 }
