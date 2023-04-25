@@ -38,8 +38,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean contains(T obj) {
-        for(T item : this) {
-            if(item.equals(obj)) {
+        for (T item : this) {
+            if (item.equals(obj)) {
                 return true;
             }
         }
@@ -47,16 +47,16 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object obj) {
-        if(this == obj) {
+        if (this == obj) {
             return true;
         }
 
-        if(obj instanceof ArrayDeque oad) {
-            if(this.size != oad.size) {
+        if (obj instanceof ArrayDeque oad) {
+            if (this.size != oad.size) {
                 return false;
             }
-            for(T item : this) {
-                if(!oad.contains(item)) {
+            for (T item : this) {
+                if (!oad.contains(item)) {
                     return false;
                 }
             }
@@ -89,6 +89,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
+    public String toString() {
+        List<String> listOfItems = new ArrayList<>();
+        for (T x : this) {
+            listOfItems.add(x.toString());
+        }
+        return String.format("[%s]", String.join(", ", listOfItems));
+    }
+
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -103,7 +112,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (size() == 0) {
             throw new NullPointerException();
         }
-        if(getCurrentAbundance() <= 0.25) {
+        if (getCurrentAbundance() <= 0.25) {
             downsize();
         }
         T removed = array[firstIndex];
@@ -118,7 +127,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (size() == 0) {
             throw new NullPointerException();
         }
-        if(getCurrentAbundance() <= 0.25) {
+        if (getCurrentAbundance() <= 0.25) {
             downsize();
         }
         T removed = array[lastIndex];
