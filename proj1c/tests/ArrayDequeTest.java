@@ -59,6 +59,11 @@ public class ArrayDequeTest {
 
     @Test
     public void toStringTest() {
+        Deque<Object> dq = new ArrayDeque<>();
+        dq.addFirst("string");
+        dq.addLast("string");
+        dq.addFirst(5320568234L);
 
+        assertThat(dq.toString()).isEqualTo("[5320568234, string, string]");
     }
 }
