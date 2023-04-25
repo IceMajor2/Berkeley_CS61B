@@ -23,7 +23,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public Iterator<T> iterator() {
-        return null;
+        return new ArrayDequeIterator<T>();
     }
 
     @Override
@@ -139,5 +139,26 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private double getCurrentAbundance() {
         return (double) size / array.length;
+    }
+
+    private class ArrayDequeIterator<T> implements Iterator<T> {
+
+        private int pos;
+
+        public ArrayDequeIterator() {
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.pos < size ? true : false;
+        }
+
+        @Override
+        public T next() {
+            T toReturn = (T) get(this.pos);
+            pos++;
+            return toReturn;
+        }
     }
 }
