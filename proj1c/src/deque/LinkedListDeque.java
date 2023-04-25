@@ -17,6 +17,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         d1.addLast(2);
 
         System.out.println(d1.equals(d2));
+        System.out.println(d1);
+        System.out.println(d2);
     }
 
     private Node sentinel;
@@ -75,7 +77,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if(this == other) {
             return true;
         }
-        
+
         if(other instanceof LinkedListDeque oLLD) {
             if(this.size != oLLD.size) {
                 return false;
@@ -129,6 +131,15 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             i++;
         }
         return (T) pointer.item;
+    }
+
+    @Override
+    public String toString() {
+        List<String> listOfItems = new ArrayList<>();
+        for(T x : this) {
+            listOfItems.add(x.toString());
+        }
+        return String.format("[%s]", String.join(", ", listOfItems));
     }
 
     private void checkForRemoveExceptions() {
