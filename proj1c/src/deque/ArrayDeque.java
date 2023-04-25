@@ -37,6 +37,34 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         array[firstIndex] = x;
     }
 
+    public boolean contains(T obj) {
+        for(T item : this) {
+            if(item.equals(obj)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+
+        if(obj instanceof ArrayDeque oad) {
+            if(this.size != oad.size) {
+                return false;
+            }
+            for(T item : this) {
+                if(!oad.contains(item)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void addLast(T x) {
         if (getCurrentAbundance() >= R_RATIO_UPPER) {
