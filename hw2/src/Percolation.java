@@ -9,7 +9,7 @@ public class Percolation {
     }
 
     private WeightedQuickUnionUF wquuf;
-    private int[][] grid;
+    private boolean[][] grid;
     private int side;
     private int openSites;
 
@@ -18,10 +18,10 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
         this.side = N;
-        this.grid = new int[side][side];
+        this.grid = new boolean[side][side];
         this.openSites = 0;
 
-        this.wquuf = new WeightedQuickUnionUF(side * side + 2);
+        this.wquuf = new WeightedQuickUnionUF(side * side + 2); // added 2 is v-top and v-bottom
         this.createVirtualTop();
         this.createVirtualBottom();
     }
@@ -30,13 +30,14 @@ public class Percolation {
         if(!validIndex(row, col)) {
             throw new IndexOutOfBoundsException();
         }
+        this.grid[row][col] = true;
     }
 
     private void createVirtualTop() {
-        int[] firstRow = this.grid[0];
+        boolean[] firstRow = this.grid[0];
 
         int i = 0;
-        for(int square : firstRow) {
+        for(boolean square : firstRow) {
             int squarePos = getPosIndex(0, i);
             wquuf.union(0, squarePos);
             i++;
@@ -44,11 +45,11 @@ public class Percolation {
     }
 
     private void createVirtualBottom() {
-        int[] lastRow = this.grid[side - 1];
+        boolean[] lastRow = this.grid[side - 1];
         int virtualBottomPos = side * side + 1;
 
         int i = 0;
-        for(int square : lastRow) {
+        for(boolean square : lastRow) {
             int squarePos = getPosIndex(0, i);
             wquuf.union(virtualBottomPos, squarePos);
             i++;
@@ -59,14 +60,15 @@ public class Percolation {
         if(!validIndex(row, col)) {
             throw new IndexOutOfBoundsException();
         }
-        return isFull(row, col) || this.grid[row][col] == 1;
+        return this.grid[row][col];
     }
 
     public boolean isFull(int row, int col) throws IndexOutOfBoundsException {
         if(!validIndex(row, col)) {
             throw new IndexOutOfBoundsException();
         }
-        return this.grid[row][col] == 2;
+        int squarePos = getPosIndex(row, col);
+        return wquuf.connected(0, squarePos); // returns true if examined position is connected to v-top
     }
 
     public int numberOfOpenSites() {
@@ -80,7 +82,7 @@ public class Percolation {
     }
 
     private boolean validIndex(int row, int col) {
-        if(row < 0 || col < 0 || row >= squareSide || col >= squareSide) {
+        if(row < 0 || col < 0 || row >= side || col >= side) {
             return false;
         }
         return true;
