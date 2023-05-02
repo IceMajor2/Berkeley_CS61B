@@ -22,38 +22,42 @@ public class Percolation {
         this.openSites = 0;
 
         this.wquuf = new WeightedQuickUnionUF(side * side + 2); // added 2 is v-top and v-bottom
-        this.createVirtualTop();
-        this.createVirtualBottom();
     }
 
     public void open(int row, int col) throws IndexOutOfBoundsException {
-        if(!validIndex(row, col)) {
-            throw new IndexOutOfBoundsException();
+        if(isOpen(row, col)) {
+            return;
         }
         this.grid[row][col] = true;
-    }
+        this.openSites++;
 
-    private void createVirtualTop() {
-        boolean[] firstRow = this.grid[0];
+        unionWithNeighbors(row, col);
 
-        int i = 0;
-        for(boolean square : firstRow) {
-            int squarePos = getPosIndex(0, i);
-            wquuf.union(0, squarePos);
-            i++;
+        if(row == 0) {
+            connectToVirtualTop(row, col);
+        } else if (row == side - 1) {
+            connectToVirtualBottom(row, col);
         }
     }
 
-    private void createVirtualBottom() {
-        boolean[] lastRow = this.grid[side - 1];
-        int virtualBottomPos = side * side + 1;
+    private void unionWithNeighbors(int row, int col) {
+        int[] openNeighborPos = getOpenNeighborsPos(row, col);
+        int thisPos = getPosIndex(row, col);
 
-        int i = 0;
-        for(boolean square : lastRow) {
-            int squarePos = getPosIndex(0, i);
-            wquuf.union(virtualBottomPos, squarePos);
-            i++;
+        for(int neighPos : openNeighborPos) {
+            wquuf.union(thisPos, neighPos);
         }
+    }
+
+    private void connectToVirtualTop(int row, int col) {
+        int squarePos = getPosIndex(row, col);
+        wquuf.union(0, squarePos);
+    }
+
+    private void connectToVirtualBottom(int row, int col) {
+        int squarePos = getPosIndex(row, col);
+        int vBottomPos = this.getVirtualBottomPos();
+        wquuf.union(squarePos, vBottomPos);
     }
 
     public boolean isOpen(int row, int col) throws IndexOutOfBoundsException {
@@ -76,7 +80,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        int virtualBottomPos = side * side + 1;
+        int virtualBottomPos = getVirtualBottomPos();
         int virtualTopPos = 0;
         return wquuf.connected(virtualTopPos, virtualBottomPos);
     }
@@ -88,11 +92,53 @@ public class Percolation {
         return true;
     }
 
+    private int[] getOpenNeighborsPos(int row, int col) {
+        Boolean up = null, down = null, left = null, right = null;
+        try {
+            up = this.grid[row - 1][col];
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        try {
+            down = this.grid[row + 1][col];
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        try {
+            left = this.grid[row][col - 1];
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        try {
+            right = this.grid[row][col + 1];
+        } catch(ArrayIndexOutOfBoundsException e) {}
+
+        int[] neighborPos = new int[4];
+        int openNeighbors = 0;
+        if(up != null && isOpen(row - 1, col)) {
+            neighborPos[openNeighbors] = getPosIndex(row - 1, col);
+            openNeighbors++;
+        }
+        if(down != null && isOpen(row + 1, col)) {
+            neighborPos[openNeighbors] = getPosIndex(row + 1, col);
+            openNeighbors++;
+        }
+        if(left != null && isOpen(row, col - 1)) {
+            neighborPos[openNeighbors] = getPosIndex(row, col - 1);
+            openNeighbors++;
+        }
+        if(right != null && isOpen(row, col + 1)) {
+            neighborPos[openNeighbors] = getPosIndex(row, col + 1);
+            openNeighbors++;
+        }
+        int[] returnArr = new int[openNeighbors];
+        System.arraycopy(neighborPos, 0, returnArr, 0, openNeighbors);
+        return returnArr;
+    }
+
     private int getPosIndex(int row, int col) throws IndexOutOfBoundsException {
         if(!validIndex(row, col)) {
             throw new IndexOutOfBoundsException();
         }
         return row * side + col + 1;
+    }
+
+    private int getVirtualBottomPos() {
+        return side * side - 1;
     }
 
     // TODO: Add any useful helper methods (we highly recommend this!).
