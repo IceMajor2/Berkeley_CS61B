@@ -1,6 +1,4 @@
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-// TODO: Add any other necessary imports.
 
 public class Percolation {
 
@@ -56,6 +54,9 @@ public class Percolation {
 
     private void connectToVirtualBottom(int row, int col) {
         int squarePos = getPosIndex(row, col);
+        if(!wquuf.connected(squarePos, 0)) {
+            return;
+        }
         int vBottomPos = this.getVirtualBottomPos();
         wquuf.union(squarePos, vBottomPos);
     }
@@ -140,8 +141,5 @@ public class Percolation {
     private int getVirtualBottomPos() {
         return side * side + 1;
     }
-
-    // TODO: Add any useful helper methods (we highly recommend this!).
-    // TODO: Remove all TODO comments before submitting.
 
 }
