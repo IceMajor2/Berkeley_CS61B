@@ -138,7 +138,7 @@ public class Percolation {
     }
 
     private int getVirtualBottomPos() {
-        return side * side - 1;
+        return side * side + 1;
     }
 
     // TODO: Add any useful helper methods (we highly recommend this!).
