@@ -19,7 +19,9 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * Constructs a new empty TimeSeries.
      */
     public TimeSeries() {
-        super();
+        super((n1, n2) -> {
+            return n1.compareTo(n2);
+        });
     }
 
     /**
@@ -27,16 +29,23 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * inclusive of both end points.
      */
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
-        super();
-        // TODO: Fill in this constructor.
+        this();
+
+        for(Integer year : ts.years()) {
+            if(!(year >= startYear && year <= endYear)) {
+                continue;
+            }
+            double data = ts.get(year);
+            super.put(year, data);
+        }
     }
 
     /**
      * Returns all years for this TimeSeries (in any order).
      */
     public List<Integer> years() {
-        // TODO: Fill in this method.
-        return null;
+        List<Integer> years = super.keySet().stream().toList();
+        return years;
     }
 
     /**
@@ -44,8 +53,8 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * Must be in the same order as years().
      */
     public List<Double> data() {
-        // TODO: Fill in this method.
-        return null;
+        List<Double> data = super.values().stream().toList();
+        return data;
     }
 
     /**
