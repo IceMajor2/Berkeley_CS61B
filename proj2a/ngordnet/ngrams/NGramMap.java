@@ -22,7 +22,6 @@ public class NGramMap {
     private static final int MAX_YEAR = 2100;
     private static Map<String, TimeSeries> wordsStats;
     private static Map<Integer, TimeSeries> wordsHistory;
-    // TODO: Add any necessary static/instance variables.
 
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
@@ -46,6 +45,7 @@ public class NGramMap {
 
             TimeSeries ts = wordsStats.getOrDefault(word, new TimeSeries());
             ts.put(year, appearances);
+            wordsStats.put(word, ts);
         }
     }
 
@@ -60,6 +60,7 @@ public class NGramMap {
 
             TimeSeries ts = wordsHistory.getOrDefault(year, new TimeSeries());
             ts.put(year, appearances);
+            wordsHistory.put(year, ts);
         }
     }
 
@@ -70,8 +71,7 @@ public class NGramMap {
      * NGramMap. This is also known as a "defensive copy".
      */
     public TimeSeries countHistory(String word, int startYear, int endYear) {
-        // TODO: Fill in this method.
-        return null;
+        return new TimeSeries(wordsStats.getOrDefault(word, new TimeSeries()), startYear, endYear);
     }
 
     /**
@@ -81,8 +81,16 @@ public class NGramMap {
      * NGramMap. This is also known as a "defensive copy".
      */
     public TimeSeries countHistory(String word) {
-        // TODO: Fill in this method.
-        return null;
+        var years = wordsStats.getOrDefault(word, new TimeSeries()).years();
+        if(years.isEmpty()) {
+            return new TimeSeries();
+        }
+        int startYear = years.get(0);
+        if(years.size() == 1) {
+            return countHistory(word, startYear, startYear);
+        }
+        int endYear = years.get(years.size() - 1);
+        return countHistory(word, startYear, endYear);
     }
 
     /**
