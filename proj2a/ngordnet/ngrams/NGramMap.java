@@ -21,14 +21,14 @@ public class NGramMap {
     private static final int MIN_YEAR = 1400;
     private static final int MAX_YEAR = 2100;
     private static Map<String, TimeSeries> wordsStats;
-    private static Map<Integer, TimeSeries> wordsHistory;
+    private static TimeSeries wordsCountHistory;
 
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
         wordsStats = new HashMap<>();
-        wordsHistory = new HashMap<>();
+        wordsCountHistory = new TimeSeries();
         readWordsFile(wordsFilename);
         readCountsFile(countsFilename);
     }
@@ -58,9 +58,7 @@ public class NGramMap {
             int year = Integer.valueOf(pieces[0]);
             double appearances = Double.valueOf(pieces[1]);
 
-            TimeSeries ts = wordsHistory.getOrDefault(year, new TimeSeries());
-            ts.put(year, appearances);
-            wordsHistory.put(year, ts);
+            wordsCountHistory.put(year, appearances);
         }
     }
 
@@ -97,8 +95,7 @@ public class NGramMap {
      * Returns a defensive copy of the total number of words recorded per year in all volumes.
      */
     public TimeSeries totalCountHistory() {
-        // TODO: Fill in this method.
-        return null;
+        return wordsCountHistory;
     }
 
     /**
