@@ -76,7 +76,7 @@ public class TimeSeriesTest {
 
         assertThat(ts.years()).containsExactly(2000, 2001, 2002, 2003, 2004);
         assertThat(ts.data()).containsExactly(-1.0, 0.0, 5.2, 91.2, 55.1);
-        
+
         var years = ts.years();
         var data = ts.data();
 
@@ -86,5 +86,51 @@ public class TimeSeriesTest {
 
             assertThat(dataPoint).isEqualTo(ts.get(year));
         }
+    }
+
+    @Test
+    public void timeSeriesDivisionTest() {
+        TimeSeries first = new TimeSeries();
+        TimeSeries second = new TimeSeries();
+
+        first.put(1900, 50.5);
+        first.put(1910, 20.0);
+        first.put(1920, 30d);
+        first.put(1930, 9d);
+        first.put(1940, 5d);
+        second.put(1900, 25.25);
+        second.put(1910, 15.0);
+        second.put(1920, 30.0);
+        second.put(1930, 27d);
+        second.put(1940, 3d);
+
+        TimeSeries divided = first.dividedBy(second);
+        assertThat(divided.get(1900)).isWithin(1E-10).of(2d);
+        assertThat(divided.get(1910)).isWithin(1E-10).of(1.3333333333333333);
+        assertThat(divided.get(1920)).isWithin(1E-10).of(1d);
+        assertThat(divided.get(1930)).isWithin(1E-10).of(0.3333333333333333);
+        assertThat(divided.get(1940)).isWithin(1E-10).of(1.6666666666666667);
+
+        first.put(1915, -5d);
+        Exception iae = null;
+        try {
+            divided = first.dividedBy(second);
+        } catch(Exception e) {
+            iae = e;
+        }
+        assertThat(iae instanceof IllegalArgumentException).isTrue();
+
+        second.put(1915, -5d);
+        second.put(2000, 20.5);
+
+        divided = first.dividedBy(second);
+        assertThat(divided.get(1900)).isWithin(1E-10).of(2d);
+        assertThat(divided.get(1910)).isWithin(1E-10).of(1.3333333333333333);
+        assertThat(divided.get(1920)).isWithin(1E-10).of(1d);
+        assertThat(divided.get(1930)).isWithin(1E-10).of(0.3333333333333333);
+        assertThat(divided.get(1940)).isWithin(1E-10).of(1.6666666666666667);
+        assertThat(divided.get(1915)).isWithin(1E-10).of(1d);
+        assertThat(divided.data().size()).isEqualTo(6);
+        assertThat(divided.years().size()).isEqualTo(6);
     }
 } 
