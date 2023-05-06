@@ -1,11 +1,15 @@
 package ngordnet.ngrams;
 
+import edu.princeton.cs.algs4.In;
+
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An object that provides utility methods for making queries on the
  * Google NGrams dataset (or a subset thereof).
- *
+ * <p>
  * An NGramMap stores pertinent data from a "words file" and a "counts
  * file". It is not a map in the strict sense, but it does provide additional
  * functionality.
@@ -16,13 +20,47 @@ public class NGramMap {
 
     private static final int MIN_YEAR = 1400;
     private static final int MAX_YEAR = 2100;
+    private static Map<String, TimeSeries> wordsStats;
+    private static Map<Integer, TimeSeries> wordsHistory;
     // TODO: Add any necessary static/instance variables.
 
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
-        // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
+        wordsStats = new HashMap<>();
+        wordsHistory = new HashMap<>();
+        readWordsFile(wordsFilename);
+        readCountsFile(countsFilename);
+    }
+
+    private void readWordsFile(String wordsFilename) {
+        In wordsFile = new In(wordsFilename);
+        while (wordsFile.hasNextLine()) {
+            String line = wordsFile.readLine();
+            String[] pieces = line.split("\t");
+
+            String word = pieces[0];
+            int year = Integer.valueOf(pieces[1]);
+            double appearances = Double.valueOf(pieces[2]);
+
+            TimeSeries ts = wordsStats.getOrDefault(word, new TimeSeries());
+            ts.put(year, appearances);
+        }
+    }
+
+    private void readCountsFile(String countsFilename) {
+        In countsFile = new In(countsFilename);
+        while(countsFile.hasNextLine()) {
+            String line = countsFile.readLine();
+            String[] pieces = line.split(",");
+
+            int year = Integer.valueOf(pieces[0]);
+            double appearances = Double.valueOf(pieces[1]);
+
+            TimeSeries ts = wordsHistory.getOrDefault(year, new TimeSeries());
+            ts.put(year, appearances);
+        }
     }
 
     /**
