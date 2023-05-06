@@ -41,4 +41,26 @@ public class TimeSeriesTest {
             assertThat(totalPopulation.data().get(i)).isWithin(1E-10).of(expectedTotal.get(i));
         }
     }
+
+    @Test
+    public void copyConstructorTest() {
+        TimeSeries ts = new TimeSeries();
+        ts.put(1990, 5.5);
+        ts.put(1991, 2.3);
+        ts.put(1992, 3.3);
+
+        ts.put(1800, 2.2);
+        ts.put(1801, 1.1);
+        ts.put(1802, 2.12);
+
+        TimeSeries copy = new TimeSeries(ts, 1700, 1989);
+
+        assertThat(copy.get(1800)).isEqualTo(2.2);
+        assertThat(copy.get(1801)).isEqualTo(1.1);
+        assertThat(copy.get(1802)).isEqualTo(2.12);
+        assertThat(copy.containsKey(1990)).isFalse();
+        assertThat(copy.containsKey(1991)).isFalse();
+        assertThat(copy.containsKey(1992)).isFalse();
+        assertThat(copy.size()).isEqualTo(3);
+    }
 } 
