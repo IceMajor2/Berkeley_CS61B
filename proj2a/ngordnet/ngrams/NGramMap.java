@@ -103,8 +103,10 @@ public class NGramMap {
      * and ENDYEAR, inclusive of both ends.
      */
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
-        // TODO: Fill in this method.
-        return null;
+        TimeSeries fullWordTs = wordsStats.getOrDefault(word, new TimeSeries());
+        TimeSeries cutWordTs = new TimeSeries(fullWordTs, startYear, endYear);
+        TimeSeries cutHistory = new TimeSeries(wordsCountHistory, startYear, endYear);
+        return cutWordTs.dividedBy(cutHistory);
     }
 
     /**
@@ -113,8 +115,8 @@ public class NGramMap {
      * TimeSeries.
      */
     public TimeSeries weightHistory(String word) {
-        // TODO: Fill in this method.
-        return null;
+        TimeSeries fullWordTs = wordsStats.getOrDefault(word, new TimeSeries());
+        return fullWordTs.dividedBy(wordsCountHistory);
     }
 
     /**
@@ -124,18 +126,23 @@ public class NGramMap {
      */
     public TimeSeries summedWeightHistory(Collection<String> words,
                                           int startYear, int endYear) {
-        // TODO: Fill in this method.
-        return null;
+        TimeSeries total = new TimeSeries();
+        for(String word : words) {
+            TimeSeries wordFreq = weightHistory(word, startYear, endYear);
+            total = total.plus(wordFreq);
+        }
+        return total;
     }
 
     /**
      * Returns the summed relative frequency per year of all words in WORDS.
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
-        // TODO: Fill in this method.
-        return null;
+        TimeSeries total = new TimeSeries();
+        for(String word : words) {
+            TimeSeries wordFreq = weightHistory(word);
+            total = total.plus(wordFreq);
+        }
+        return total;
     }
-
-    // TODO: Add any private helper methods.
-    // TODO: Remove all TODO comments before submitting.
 }

@@ -14,7 +14,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
 
     private static final int MIN_YEAR = 1400;
     private static final int MAX_YEAR = 2100;
-    // TODO: Add any necessary static/instance variables.
 
     /**
      * Constructs a new empty TimeSeries.
@@ -73,7 +72,11 @@ public class TimeSeries extends TreeMap<Integer, Double> {
         List<Integer> yearsOther = ts.years();
         List<Double> dataOther = ts.data();
 
-        TimeSeries newTs = new TimeSeries(this, yearsThis.get(0), yearsThis.get(yearsThis.size() - 1));
+        TimeSeries newTs = new TimeSeries();
+        try {
+            newTs = new TimeSeries(this, yearsThis.get(0), yearsThis.get(yearsThis.size() - 1));
+        } catch(ArrayIndexOutOfBoundsException e) {}
+
         for (int i = 0; i < yearsOther.size(); i++) {
             int year = yearsOther.get(i);
             double data = dataOther.get(i);
@@ -107,7 +110,4 @@ public class TimeSeries extends TreeMap<Integer, Double> {
         }
         return newTs;
     }
-
-    // TODO: Add any private helper methods.
-    // TODO: Remove all TODO comments before submitting.
 }
