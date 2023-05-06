@@ -63,4 +63,28 @@ public class TimeSeriesTest {
         assertThat(copy.containsKey(1992)).isFalse();
         assertThat(copy.size()).isEqualTo(3);
     }
+
+    @Test
+    public void listOfYearsAndDataTest() {
+        TimeSeries ts = new TimeSeries();
+
+        ts.put(2000, -1.0);
+        ts.put(2001, 0.0);
+        ts.put(2002, 5.2);
+        ts.put(2003, 91.2);
+        ts.put(2004, 55.1);
+
+        assertThat(ts.years()).containsExactly(2000, 2001, 2002, 2003, 2004);
+        assertThat(ts.data()).containsExactly(-1.0, 0.0, 5.2, 91.2, 55.1);
+        
+        var years = ts.years();
+        var data = ts.data();
+
+        for(int i = 0; i < 5; i++) {
+            int year = years.get(i);
+            double dataPoint = data.get(i);
+
+            assertThat(dataPoint).isEqualTo(ts.get(year));
+        }
+    }
 } 
